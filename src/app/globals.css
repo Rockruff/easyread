@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #002a4e;
+  --color-primary-foreground: white;
+  --color-secondary: #fe8920;
+  --color-secondary-foreground: white;
+
+  --color-card: white;
+  --color-card-foreground: black;
+
+  --color-border: var(--color-neutral-300);
+  --color-muted-foreground: var(--color-neutral-500);
+
+  --spacing-header-height: calc(18 * var(--spacing));
+  --spacing-page-padding: calc(4 * var(--spacing));
+  --spacing-content-window: calc(100vh - var(--spacing-header-height) - 2 * var(--spacing-page-padding));
+}
+
+@layer theme {
+  :root {
+    @variant md {
+      --spacing-page-padding: calc(8 * var(--spacing));
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+}
