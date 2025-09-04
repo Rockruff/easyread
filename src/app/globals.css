@@ -1,20 +1,52 @@
-@import "tailwindcss";
+/* shadcn/ui dependencies & generated code, excluding the actual colors */
+@import "../components/ui/shadcn.css";
 
 @theme {
-  --color-primary: #002a4e;
-  --color-primary-foreground: white;
-  --color-secondary: #fe8920;
-  --color-secondary-foreground: white;
-
-  --color-card: white;
-  --color-card-foreground: black;
-
-  --color-border: var(--color-neutral-300);
-  --color-muted-foreground: var(--color-neutral-500);
-
   --spacing-header-height: calc(18 * var(--spacing));
   --spacing-page-padding: calc(4 * var(--spacing));
   --spacing-content-window: calc(100vh - var(--spacing-header-height) - 2 * var(--spacing-page-padding));
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: white;
+  --foreground: var(--color-neutral-950);
+  --card: var(--background);
+  --card-foreground: var(--foreground);
+  --popover: var(--background);
+  --popover-foreground: var(--foreground);
+
+  --primary: #fe8920;
+  --primary-foreground: white;
+  --secondary: #002a4e;
+  --secondary-foreground: white;
+
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: var(--color-neutral-500);
+
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: var(--color-neutral-300);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  /* Unused */
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+
+  /* Unused For now but sidebar may be migrated to shadcn/ui later */
+  --sidebar: var(--secondary);
+  --sidebar-foreground: var(--secondary-foreground);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
 @layer theme {
@@ -22,11 +54,5 @@
     @variant md {
       --spacing-page-padding: calc(8 * var(--spacing));
     }
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
   }
 }

@@ -12,6 +12,7 @@ const basePrettierConfig = {
   importOrder: [
     builtinsPattern, // Node.js built-ins
     "<THIRD_PARTY_MODULES>", // Third-party modules
+    String.raw`^@/components/ui`, // shadcn ui components
     String.raw`^(@|\.{1,2})?/`, // Internal modules: alias (@/) and relative paths (/, ./, ../)
   ],
   importOrderSeparation: true,

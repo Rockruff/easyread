@@ -2,6 +2,7 @@
 .*
 !.gitignore
 !.husky
+!.prettierignore
 
 # dependencies
 node_modules

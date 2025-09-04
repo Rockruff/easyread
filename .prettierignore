@@ -1,0 +1,2 @@
+# Do not format shadcn/ui code
+src/components/ui/*.tsx
