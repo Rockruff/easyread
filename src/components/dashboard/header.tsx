@@ -1,16 +1,17 @@
 "use client";
 
+import { BreadcrumbGroup } from "./breadcrumbs";
 import { fetchCurrentUser } from "@/lib/api/users";
 import { useFetchedState } from "@/lib/hooks/fetch";
 
 export default function Header({ breadcrumbs }: { breadcrumbs?: React.ReactNode }) {
-  const [user, _] = useFetchedState(null, fetchCurrentUser, []);
+  const [user, _] = useFetchedState(undefined, fetchCurrentUser, []);
 
   return (
-    <div className="flex h-full w-full items-center px-8">
-      {breadcrumbs}
+    <div className="flex h-full w-full items-center max-md:px-4 md:px-8">
+      <BreadcrumbGroup className="flex-1">{breadcrumbs}</BreadcrumbGroup>
       {user && (
-        <div className="ml-auto flex items-center gap-4">
+        <div className="flex items-center gap-4">
           <div className="relative">
             <button className="hover:text-primary text-muted-foreground p-2">
               <i className="fas fa-bell"></i>
