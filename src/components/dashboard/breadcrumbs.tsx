@@ -10,7 +10,7 @@ export function Breadcrumb({ children }: { children: React.ReactNode }) {
     <div className="group contents">
       <Link
         href={href}
-        className={isActive ? "text-secondary pointer-events-none text-sm underline" : "text-sm hover:underline"}
+        className={isActive ? "text-primary pointer-events-none text-sm underline" : "text-sm hover:underline"}
       >
         {children}
       </Link>

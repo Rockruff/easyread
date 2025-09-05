@@ -1,9 +1,13 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, RefreshCwIcon } from "lucide-react";
 import { useState } from "react";
 import React from "react";
 
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+
+import { ImageGenerationOptions } from "@/components/dashboard/image-generation-options";
 import { Section, addNewSection, fetchSections } from "@/lib/api/sections";
 import { useFetchedState } from "@/lib/hooks/fetch";
 
@@ -15,114 +19,71 @@ function SectionsEditor(
   setSections: React.Dispatch<React.SetStateAction<Section[]>>,
 ) {
   return (
-    <>
-      <div className="flex flex-col gap-4 py-1">
-        {sections.map((section, index) => {
-          return (
-            <div key={index} className="flex gap-4">
-              <div className="group relative w-1/3">
-                <img src={section.image} className="aspect-[4/3] w-full object-cover" />
-                <button
-                  className="bg-opacity-0 group-hover:bg-opacity-30 absolute inset-0 flex items-center justify-center bg-black opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                  onClick={() => setSelectedSection(section)}
-                >
-                  <span className="text-white">Click to edit</span>
-                </button>
-              </div>
-              <textarea className="flex-1 p-2" defaultValue={section.text}></textarea>
-            </div>
-          );
-        })}
-        <button
-          className="bg-secondary text-secondary-foreground flex w-full items-center justify-center gap-2 rounded px-6 py-2"
-          onClick={() => {
-            addNewSection(doc_id).then((section) => {
-              setSections([...sections, section]);
-            });
-          }}
-        >
-          <PlusIcon />
-          <span>Add New Section</span>
-        </button>
-      </div>
-    </>
+    <div className="flex flex-col gap-4 py-1">
+      {sections.map((section, index) => (
+        <div key={index} className="flex gap-4">
+          <div className="group relative w-1/3 overflow-hidden rounded">
+            <img src={section.image} className="aspect-[4/3] w-full object-cover" />
+            <button
+              className="absolute inset-0 grid place-items-center bg-black/75 opacity-0 transition-opacity group-hover:opacity-100"
+              onClick={() => setSelectedSection(section)}
+            >
+              <span className="text-sm text-white">Click to edit</span>
+            </button>
+          </div>
+          <Textarea className="flex-1 resize-none" defaultValue={section.text}></Textarea>
+        </div>
+      ))}
+      <Button
+        onClick={() => {
+          addNewSection(doc_id).then((section) => {
+            setSections([...sections, section]);
+          });
+        }}
+      >
+        <PlusIcon />
+        <span>Add New Section</span>
+      </Button>
+    </div>
   );
 }
 
 function ImageEditor(selectedSection: Section | null) {
   if (!selectedSection) {
-    return <div className="flex flex-col items-center justify-center gap-4">Please select an image to edit</div>;
+    return (
+      <div className="grid size-full place-items-center">
+        <span className="text-muted-foreground text-sm">Please select an image to edit</span>
+      </div>
+    );
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <>
       <div className="flex flex-col gap-2">
-        <h3 className="text-sm text-gray-500">SELECTED IMAGE</h3>
-        <img src={selectedSection.image} alt="Selected image" className="aspect-[4/3] w-full object-cover" />
+        <span className="text-muted-foreground text-xs uppercase">Selected Image</span>
+        <img src={selectedSection.image} className="aspect-[4/3] w-full rounded-lg object-cover" />
+        <Button>Browse Your Library</Button>
+        <Button variant="outline"> Upload Your Own Image</Button>
       </div>
-
       <div className="flex flex-col gap-2">
-        <h3 className="text-sm text-gray-500">AI GENERATED OPTIONS</h3>
-        <div className="grid grid-cols-2 gap-3">
-          {selectedSection.candidates.map((image) => {
-            return (
-              <div
-                key={image}
-                className="hover:border-secondary cursor-pointer overflow-hidden rounded-lg border transition-colors"
-              >
-                <img src={image} className="aspect-[4/3] w-full object-cover" />
-              </div>
-            );
-          })}
+        <span className="text-muted-foreground text-xs uppercase">Generated Candidates</span>
+        <div className="grid grid-cols-2 gap-2">
+          {selectedSection.candidates.map((image) => (
+            <div
+              key={image}
+              className="hover:ring-ring/50 cursor-pointer overflow-hidden rounded-lg transition-all hover:ring-[3px]"
+            >
+              <img src={image} className="aspect-[4/3] w-full object-cover" />
+            </div>
+          ))}
         </div>
-        <button className="bg-secondary text-secondary-foreground hover:bg-opacity-90 w-full rounded-md px-4 py-2 transition-colors">
-          Regenerate Images
-        </button>
+        <ImageGenerationOptions />
+        <Button className="my-1">
+          <RefreshCwIcon />
+          Regenerate Candidates
+        </Button>
       </div>
-
-      <div className="flex flex-col gap-2">
-        <h3 className="text-sm text-gray-500">GENERATION OPTIONS</h3>
-
-        <label className="block text-sm text-gray-700">Image Source</label>
-        <select
-          id="aiModel"
-          className="focus:ring-primary focus:border-primary w-full rounded-md border px-3 py-2 focus:outline-none"
-        >
-          <option>Image Pool</option>
-          <option>AI Generated</option>
-        </select>
-
-        <label className="block text-sm text-gray-700">Image Style</label>
-        <select
-          id="imageStyle"
-          className="focus:ring-primary focus:border-primary w-full rounded-md border px-3 py-2 focus:outline-none"
-        >
-          <option value="realistic">Realistic</option>
-          <option value="artistic">Artistic</option>
-          <option value="minimalist">Minimalist</option>
-          <option value="vintage">Vintage</option>
-          <option value="modern">Modern</option>
-        </select>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <h3 className="text-sm text-gray-500">IMAGE LIBRARY</h3>
-        <button className="text-primary w-full rounded-md border px-4 py-2 transition-colors hover:bg-gray-50">
-          Browse Your Library
-        </button>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <h3 className="text-sm text-gray-500">UPLOAD YOUR OWN</h3>
-        <div className="rounded-lg border-2 border-dashed p-6 text-center">
-          <p className="text-sm text-gray-600">Drag and drop your image here or click to browse</p>
-          <input type="file" className="hidden" />
-          <button className="text-primary mt-4 rounded-md border px-4 py-2 transition-colors hover:bg-gray-50">
-            Select Image
-          </button>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 
@@ -132,16 +93,14 @@ export default function ({ params }: { params: Promise<{ id: string }> }) {
   const [sections, setSections] = useFetchedState([], fetchSections, [doc_id]);
 
   return (
-    <div className="gap-page-padding flex flex-col md:flex-row">
-      <div className="flex-1">
-        <div className="h-content-window -mr-4 overflow-y-auto pr-4">
-          {SectionsEditor(doc_id, selectedSection, setSelectedSection, sections, setSections)}
-        </div>
+    <main className="flex max-md:flex-col max-md:gap-4 max-md:p-4 md:h-[var(--page-height)] md:items-stretch md:gap-8 md:p-8">
+      <div className="-mx-4 flex-1 overflow-y-auto px-4 max-md:contents">
+        {SectionsEditor(doc_id, selectedSection, setSelectedSection, sections, setSections)}
       </div>
-      <div className="max-md:hidden md:block md:border-l"></div>
-      <div className="md:w-1/3">
-        <div className="h-content-window -mr-4 overflow-y-auto pr-4">{ImageEditor(selectedSection)}</div>
+      <div className="border-l max-md:hidden"></div>
+      <div className="w-1/3 max-md:hidden">
+        <div className="-mx-4 flex h-full flex-col gap-4 overflow-y-auto px-4">{ImageEditor(selectedSection)}</div>
       </div>
-    </div>
+    </main>
   );
 }

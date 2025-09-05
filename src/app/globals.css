@@ -2,9 +2,8 @@
 @import "../components/ui/shadcn.css";
 
 @theme {
-  --spacing-header-height: calc(18 * var(--spacing));
-  --spacing-page-padding: calc(4 * var(--spacing));
-  --spacing-content-window: calc(100vh - var(--spacing-header-height) - 2 * var(--spacing-page-padding));
+  --header-height: calc(18 * var(--spacing));
+  --page-height: calc(100vh - var(--header-height));
 }
 
 :root {
@@ -15,21 +14,18 @@
   --card-foreground: var(--foreground);
   --popover: var(--background);
   --popover-foreground: var(--foreground);
-
   --primary: #fe8920;
   --primary-foreground: white;
   --secondary: #002a4e;
   --secondary-foreground: white;
-
-  --muted: oklch(0.97 0 0);
+  --muted: var(--color-neutral-100);
   --muted-foreground: var(--color-neutral-500);
-
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
+  --accent: var(--color-neutral-100);
+  --accent-foreground: var(--foreground);
+  --destructive: var(--color-red-500);
   --border: var(--color-neutral-300);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --input: var(--border);
+  --ring: var(--primary);
 
   /* Unused */
   --chart-1: oklch(0.646 0.222 41.116);
@@ -47,12 +43,4 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-}
-
-@layer theme {
-  :root {
-    @variant md {
-      --spacing-page-padding: calc(8 * var(--spacing));
-    }
-  }
 }

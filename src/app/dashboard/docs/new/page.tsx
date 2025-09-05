@@ -1,152 +1,87 @@
 "use client";
 
-import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
 
-interface UploadContext {
-  file: File | null;
-  setFile: React.Dispatch<React.SetStateAction<File | null>>;
-  fileUrl: string | null;
-  setFileUrl: React.Dispatch<React.SetStateAction<string | null>>;
-}
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-function FileUpload({ file, setFile, fileUrl, setFileUrl }: UploadContext) {
-  const fileInput = useRef<HTMLInputElement>(null);
-
-  if (!file || !fileUrl) {
-    return (
-      <>
-        <i className="fas fa-cloud-upload-alt text-muted-foreground text-4xl"></i>
-        <div className="text-muted-foreground text-xs">Supported formats: PDF, DOCX (Max 10MB)</div>
-        <input
-          ref={fileInput}
-          type="file"
-          className="hidden"
-          accept=".pdf"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            const selectedFile = e.target.files?.[0];
-            if (!selectedFile) return;
-            setFile(selectedFile);
-            setFileUrl(URL.createObjectURL(selectedFile));
-          }}
-        />
-        <button
-          className="bg-secondary text-secondary-foreground rounded-md px-6 py-2 max-md:w-full"
-          onClick={() => fileInput.current?.click()}
-        >
-          Browse Files
-        </button>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <p className="text-muted-foreground text-xs">{file.name}</p>
-      <iframe src={fileUrl} className="w-full rounded-lg border max-md:h-[50vh] md:flex-1"></iframe>
-      <button
-        className="bg-secondary text-secondary-foreground rounded-md px-6 py-2 max-md:w-full"
-        onClick={() => {
-          setFile(null);
-          setFileUrl(null);
-        }}
-      >
-        Reset Selected File
-      </button>
-    </>
-  );
-}
-
-function ConfigureOptions() {
-  const [enableImages, setEnableImages] = useState(true);
-
-  return (
-    <>
-      <div className="flex items-center">
-        <input
-          type="checkbox"
-          checked={enableImages}
-          onChange={(e) => setEnableImages(e.target.checked)}
-          className="text-primary focus:ring-primary h-4 w-4 rounded"
-        />
-        <label className="ml-2 text-sm text-gray-700">Auto Generate Images</label>
-      </div>
-
-      <div className={`contents ${!enableImages ? "[&>*]:pointer-events-none [&>*]:opacity-50" : ""}`}>
-        <div>
-          <label className="text-sm">Image Source</label>
-          <select
-            id="aiModel"
-            className="focus:ring-primary focus:border-primary w-full rounded-md border px-3 py-2 focus:outline-none"
-            disabled={!enableImages}
-          >
-            <option>Image Pool</option>
-            <option>AI Generated</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="text-sm">Image Style</label>
-          <select
-            id="imageStyle"
-            className="focus:ring-primary focus:border-primary w-full rounded-md border px-3 py-2 focus:outline-none"
-            disabled={!enableImages}
-          >
-            <option value="realistic">Realistic</option>
-            <option value="artistic">Artistic</option>
-            <option value="minimalist">Minimalist</option>
-            <option value="vintage">Vintage</option>
-            <option value="modern">Modern</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="text-sm">Paragraphs Per Image</label>
-          <input
-            type="number"
-            id="imageCount"
-            min="1"
-            max="5"
-            defaultValue="1"
-            disabled={!enableImages}
-            className="focus:ring-primary focus:border-primary w-full rounded-md border px-3 py-2 focus:outline-none"
-          />
-        </div>
-      </div>
-
-      <div className="mt-auto flex">
-        <Link
-          href="/dashboard/docs"
-          className="bg-primary focus:ring-primary text-primary-foreground rounded-md px-6 py-2 focus:ring-2 focus:ring-offset-2"
-          onClick={() => {
-            toast.success(
-              "Document Successfully Created. Once the initial processing is done, you can export or edit the result.",
-            );
-          }}
-        >
-          Upload &amp; Process
-        </Link>
-      </div>
-    </>
-  );
-}
+import { ImageGenerationOptions } from "@/components/dashboard/image-generation-options";
 
 export default function () {
+  const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
 
-  const context: UploadContext = { file, setFile, fileUrl, setFileUrl };
+  const unselectFile = () => {
+    setFile(null);
+    setFileUrl(null);
+  };
+  const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (!selectedFile) return;
+    setFile(selectedFile);
+    setFileUrl(URL.createObjectURL(selectedFile));
+  };
+
+  const [enableImages, setEnableImages] = useState(true);
+
+  const handleCreateDocument = () => {
+    toast.success(
+      "Document Successfully Created. Once the initial processing is done, you can export or edit the result.",
+    );
+    router.push("/dashboard/docs");
+  };
 
   return (
-    <div className="gap-page-padding flex flex-col md:flex-row">
-      <div className="md:h-content-window flex flex-col items-center justify-center gap-4 md:flex-1">
-        <FileUpload {...context} />
+    <main className="flex max-md:flex-col max-md:gap-4 max-md:p-4 md:h-[var(--page-height)] md:items-stretch md:gap-8 md:p-8">
+      <div className="flex flex-col items-center max-md:gap-2 max-md:rounded-lg max-md:border max-md:border-dashed max-md:p-4 md:flex-1 md:justify-center md:gap-4">
+        {file && fileUrl ? (
+          <>
+            <iframe src={fileUrl} className="w-full rounded-lg border max-md:h-[50vh] md:flex-1"></iframe>
+            <p className="text-muted-foreground text-xs">{file.name}</p>
+            <Button className="max-md:w-full" onClick={unselectFile}>
+              Reset Selected File
+            </Button>
+          </>
+        ) : (
+          <>
+            <i className="fas fa-cloud-upload-alt text-muted-foreground text-4xl"></i>
+            <div className="text-muted-foreground text-xs">Supported formats: PDF, DOCX (Max 10MB)</div>
+            <Button asChild className="max-md:w-full">
+              <label>
+                Browse Files
+                <input type="file" className="hidden" accept=".pdf" onChange={selectFile} />
+              </label>
+            </Button>
+          </>
+        )}
       </div>
-      <div className="max-md:hidden md:block md:border-l"></div>
-      <div className="md:h-content-window flex flex-col gap-4 md:w-1/3">
-        <ConfigureOptions />
+      <div className="border-l max-md:hidden"></div>
+      <div className="flex w-1/3 flex-col gap-4 max-md:contents">
+        <div className="flex flex-col gap-4 max-md:rounded-lg max-md:border max-md:border-dashed max-md:p-4 md:-mx-4 md:flex-1 md:overflow-y-auto md:px-4">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm">Language Style</label>
+            <Select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Please Select..." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="library">Plain English</SelectItem>
+                <SelectItem value="stable-diffusion">Easy Read</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox checked={enableImages} onCheckedChange={(checked) => setEnableImages(!!checked)} />
+            <label className="text-sm">Auto Generate Images</label>
+          </div>
+          <ImageGenerationOptions enabled={enableImages} />
+        </div>
+        <Button onClick={handleCreateDocument}>Upload &amp; Process</Button>
       </div>
-    </div>
+    </main>
   );
 }
