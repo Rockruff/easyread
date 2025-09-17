@@ -60,7 +60,7 @@ export default function () {
                 className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-12 justify-start gap-3 text-base"
                 asChild
               >
-                <Link href="/dashboard/docs" onClick={onNavLinkClick}>
+                <Link href="/docs" onClick={onNavLinkClick}>
                   <FileTextIcon />
                   <span>Documents</span>
                 </Link>
@@ -71,7 +71,7 @@ export default function () {
                 className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-12 justify-start gap-3 text-base"
                 asChild
               >
-                <Link href="/dashboard/library" onClick={onNavLinkClick}>
+                <Link href="/library" onClick={onNavLinkClick}>
                   <ImagesIcon />
                   <span>Library</span>
                 </Link>

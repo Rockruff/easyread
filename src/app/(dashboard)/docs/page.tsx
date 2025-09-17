@@ -33,10 +33,10 @@ function Actions({ doc }: { doc: Doc }) {
 
   return (
     <div className="[&>*]:hover:text-primary flex items-center justify-center gap-2">
-      <Link title="Edit" href={`/dashboard/docs/${doc.id}`}>
+      <Link title="Edit" href={`/docs/${doc.id}`}>
         <EditIcon className="size-4" />
       </Link>
-      <Link title="Publish" href={`/dashboard/docs/${doc.id}/publish`}>
+      <Link title="Publish" href={`/docs/${doc.id}/publish`}>
         <DownloadIcon className="size-4" />
       </Link>
       <button title="Delete">
@@ -60,7 +60,7 @@ export default function () {
           <Input type="text" className="pl-10" placeholder="Search documents..." />
         </div>
         <Button asChild>
-          <Link href="/dashboard/docs/new">
+          <Link href="/docs/new">
             <PlusIcon />
             New Document
           </Link>
@@ -92,7 +92,9 @@ export default function () {
                   <Checkbox />
                 </td>
                 <td>
-                  <Link href={`/dashboard/docs/${doc.id}`}>{doc.title}</Link>
+                  <Link href={`/docs/${doc.id}`} className="hover:text-primary hover:underline">
+                    {doc.title}
+                  </Link>
                 </td>
                 <td>
                   <FuzzyTimeDisplay value={doc.created} />

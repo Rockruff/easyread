@@ -306,7 +306,7 @@ export default function ({ params }: { params: Promise<{ id: string }> }) {
           </TooltipContent>
         </Tooltip>
         <Button asChild>
-          <Link href={`/dashboard/docs/${doc_id}/publish`}>
+          <Link href={`/docs/${doc_id}/publish`}>
             <ShareIcon />
             Publish
           </Link>

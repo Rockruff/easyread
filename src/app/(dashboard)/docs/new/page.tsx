@@ -33,7 +33,7 @@ export default function () {
     toast.success(
       "Document Successfully Created. Once the initial processing is done, you can export or edit the result.",
     );
-    router.push("/dashboard/docs");
+    router.push("/docs");
   };
 
   return (
