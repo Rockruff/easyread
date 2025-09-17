@@ -2,6 +2,7 @@
 @import "../components/ui/shadcn.css";
 
 @theme {
+  --sidebar-width: calc(64 * var(--spacing));
   --header-height: calc(18 * var(--spacing));
   --page-height: calc(100vh - var(--header-height));
 }
@@ -21,11 +22,16 @@
   --muted: var(--color-neutral-100);
   --muted-foreground: var(--color-neutral-500);
   --accent: var(--color-neutral-100);
-  --accent-foreground: var(--foreground);
+  --accent-foreground: var(--primary);
   --destructive: var(--color-red-500);
   --border: var(--color-neutral-300);
   --input: var(--border);
   --ring: var(--primary);
+  --sidebar: var(--secondary);
+  --sidebar-foreground: var(--secondary-foreground);
+  --sidebar-accent: color-mix(in srgb, var(--sidebar-foreground) 10%, var(--sidebar) 90%);
+  --sidebar-accent-foreground: var(--secondary-foreground);
+  --sidebar-border: var(--sidebar-accent);
 
   /* Unused */
   --chart-1: oklch(0.646 0.222 41.116);
@@ -33,14 +39,7 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-
-  /* Unused For now but sidebar may be migrated to shadcn/ui later */
-  --sidebar: var(--secondary);
-  --sidebar-foreground: var(--secondary-foreground);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }

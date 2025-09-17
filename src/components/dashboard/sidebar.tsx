@@ -1,48 +1,123 @@
+"use client";
+
+import { useAtom, useAtomValue } from "jotai";
+import { FileTextIcon, ImagesIcon, LogOutIcon, SettingsIcon } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
 
+import Transition from "../common/transition";
+import { Button } from "../ui/button";
 import Logo from "@/components/branding/logo";
+import { fetchCurrentUser } from "@/lib/api/users";
+import { useFetchedState } from "@/lib/hooks/fetch";
+import { isMaxMdScreenAtom } from "@/stores/responsive";
+import { isMobileSidebarOpenAtom } from "@/stores/sidebar";
 
-export default function Sidebar() {
+export default function () {
+  const isMobileMode = useAtomValue(isMaxMdScreenAtom);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useAtom(isMobileSidebarOpenAtom);
+
+  useEffect(() => {
+    // Prevent body scroll when mobile sidebar is shown
+    const isLocked = isMobileMode && isMobileSidebarOpen;
+    const scrollLockTarget = document.body;
+    const classList = scrollLockTarget.classList;
+    classList.toggle("!overflow-hidden", isLocked);
+  }, [isMobileMode, isMobileSidebarOpen]);
+
+  const [user, _] = useFetchedState(undefined, fetchCurrentUser, []);
+  const onNavLinkClick = () => isMobileMode && setIsMobileSidebarOpen(false);
+
   return (
-    <aside className="bg-sidebar text-sidebar-foreground h-screen w-64 overflow-y-auto max-md:hidden">
-      <div className="flex flex-col gap-6 p-4">
-        <div className="flex justify-center">
-          <Logo />
-        </div>
-        <nav>
-          <div className="px-4 py-3">
-            <span className="text-sm font-medium">Main</span>
+    <>
+      <Transition
+        show={isMobileSidebarOpen}
+        className="fixed inset-0 z-20 md:hidden"
+        type="transition-[background-color]"
+        before="hidden"
+        start="bg-transparent"
+        end="bg-black/75"
+        onClick={() => setIsMobileSidebarOpen(false)}
+      />
+      <Transition
+        show={isMobileSidebarOpen}
+        className="fixed inset-y-0 left-0 z-20 overflow-hidden md:contents [&>*]:h-full"
+        type="transition-[width]"
+        before="hidden"
+        start="w-0"
+        end="w-[var(--sidebar-width)]"
+      >
+        <aside className="bg-sidebar text-sidebar-foreground flex w-[var(--sidebar-width)] flex-col overflow-hidden">
+          <div className="border-sidebar-border grid h-[var(--header-height)] place-items-center border-b">
+            <Logo />
           </div>
-          <Link
-            href="/dashboard/docs"
-            className="text-sidebar-foreground flex items-center px-4 py-3 hover:bg-current/10"
-          >
-            <i className="fas fa-file-alt mr-3"></i>
-            <span>Documents</span>
-          </Link>
-          <Link href="#" className="text-sidebar-foreground flex items-center px-4 py-3 hover:bg-current/10">
-            <i className="fas fa-image mr-3"></i>
-            <span>Library</span>
-          </Link>
-        </nav>
-        <nav>
-          <div className="px-4 py-3">
-            <span className="text-sm font-medium">Account</span>
+          <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4">
+            <nav className="flex flex-col">
+              <label className="px-4 text-sm/12">Main</label>
+              <Button
+                variant="ghost"
+                size="lg"
+                className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-12 justify-start gap-3 text-base"
+                asChild
+              >
+                <Link href="/dashboard/docs" onClick={onNavLinkClick}>
+                  <FileTextIcon />
+                  <span>Documents</span>
+                </Link>
+              </Button>
+              <Button
+                variant="ghost"
+                size="lg"
+                className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-12 justify-start gap-3 text-base"
+                asChild
+              >
+                <Link href="/dashboard/library" onClick={onNavLinkClick}>
+                  <ImagesIcon />
+                  <span>Library</span>
+                </Link>
+              </Button>
+            </nav>
+            <nav className="flex flex-col">
+              <label className="px-4 text-sm/12">Account</label>
+              <Button
+                variant="ghost"
+                size="lg"
+                className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-12 justify-start gap-3 text-base"
+                asChild
+              >
+                <Link href="/settings" onClick={onNavLinkClick}>
+                  <SettingsIcon />
+                  <span>Settings</span>
+                </Link>
+              </Button>
+              <Button
+                variant="ghost"
+                size="lg"
+                className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-12 justify-start gap-3 text-base"
+                asChild
+              >
+                <Link href="/logout" onClick={onNavLinkClick}>
+                  <LogOutIcon />
+                  <span>Logout</span>
+                </Link>
+              </Button>
+            </nav>
           </div>
-          <Link href="#" className="text-sidebar-foreground flex items-center px-4 py-3 hover:bg-current/10">
-            <i className="fas fa-users mr-3"></i>
-            <span>Profile</span>
-          </Link>
-          <Link href="#" className="text-sidebar-foreground flex items-center px-4 py-3 hover:bg-current/10">
-            <i className="fas fa-cog mr-3"></i>
-            <span>Settings</span>
-          </Link>
-          <Link href="#" className="text-sidebar-foreground flex items-center px-4 py-3 hover:bg-current/10">
-            <i className="fas fa-sign-out mr-3"></i>
-            <span>Logout</span>
-          </Link>
-        </nav>
-      </div>
-    </aside>
+          <div className="border-sidebar-border flex h-16 items-center gap-4 border-t pr-4 pl-6">
+            {user && (
+              <>
+                <img src={user.avatar} className="size-9.5 rounded-full" />
+                <div className="flex flex-1 flex-col gap-1.5 overflow-hidden text-left">
+                  <span className="truncate text-[calc(4rem/5)]/none">
+                    {user.firstName} {user.lastName}
+                  </span>
+                  <span className="truncate text-[calc(2rem/3)]/none">{user.email}</span>
+                </div>
+              </>
+            )}
+          </div>
+        </aside>
+      </Transition>
+    </>
   );
 }

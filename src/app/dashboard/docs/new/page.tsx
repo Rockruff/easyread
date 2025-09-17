@@ -1,5 +1,6 @@
 "use client";
 
+import { CloudUploadIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -48,7 +49,7 @@ export default function () {
           </>
         ) : (
           <>
-            <i className="fas fa-cloud-upload-alt text-muted-foreground text-4xl"></i>
+            <CloudUploadIcon className="text-muted-foreground size-12" />
             <div className="text-muted-foreground text-xs">Supported formats: PDF, DOCX (Max 10MB)</div>
             <Button asChild className="max-md:w-full">
               <label>

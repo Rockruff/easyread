@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  CheckIcon,
   CircleXIcon,
   CloudCheckIcon,
   EditIcon,
@@ -15,15 +16,74 @@ import { useEffect, useState } from "react";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 import { ImageGenerationOptions } from "@/components/dashboard/image-generation-options";
 import { Doc, fetchDoc } from "@/lib/api/docs";
+import { fetchImages } from "@/lib/api/images";
 import { Section, addNewSection, fetchSections } from "@/lib/api/sections";
 import { useFetchedState } from "@/lib/hooks/fetch";
 import { cn } from "@/lib/utils";
+
+// implementation of this page is dirty.
+// this page is only for ui demonstration purpose, may be refactored later.
+
+function LibraryImagePickerDialog({ section, forceRerender }: { section: Section; forceRerender: () => void }) {
+  const [images] = useFetchedState([], fetchImages, []);
+
+  return (
+    <Dialog>
+      <Button asChild>
+        <DialogTrigger>Browse Your Library</DialogTrigger>
+      </Button>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Library Browser</DialogTitle>
+          <DialogDescription>Click on an image to use it in your document.</DialogDescription>
+        </DialogHeader>
+        <div className="@container -mx-4 -my-1 max-h-[62.5vh] overflow-y-auto px-4 py-1">
+          <div className="grid grid-cols-3 gap-2 @md:grid-cols-4 @xl:grid-cols-5">
+            {images.map((image, index) => (
+              <div
+                key={index}
+                className={cn(
+                  "ring-ring/50 aspect-[4/3] cursor-pointer overflow-hidden rounded transition-all",
+                  image.url === section.image ? "ring-[3px]" : "hover:ring-[3px]",
+                )}
+                onClick={() => {
+                  section.image = image.url;
+                  forceRerender();
+                }}
+              >
+                <img src={image.url} className="size-full object-cover"></img>
+              </div>
+            ))}
+          </div>
+        </div>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button>
+              <CheckIcon />
+              Done
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 function SectionsEditor(
   doc_id: string,
@@ -36,18 +96,18 @@ function SectionsEditor(
     <>
       {sections.map((section, index) => (
         <div key={index} className="flex gap-4">
-          <div className="group relative w-1/3 overflow-hidden rounded">
-            <img src={section.image} className="aspect-[4/3] w-full object-cover" />
+          <div className="group relative aspect-[4/3] w-1/3 overflow-hidden rounded">
+            <img src={section.image} className="size-full object-cover" />
             <button
-              className="absolute inset-0 grid place-items-center bg-black/75 opacity-0 transition-opacity group-hover:opacity-100"
+              className="absolute inset-0 grid place-items-center bg-black/75 text-white opacity-0 transition-opacity group-hover:opacity-100"
               onClick={() => setSelectedSection(section)}
             >
-              <span className="text-sm text-white">Click to edit</span>
+              <span className="text-sm">Click to edit</span>
             </button>
           </div>
           <Textarea className="flex-1 resize-none" defaultValue={section.text}></Textarea>
         </div>
-      ))}{" "}
+      ))}
       <Button
         onClick={() => {
           addNewSection(doc_id).then((section) => {
@@ -65,9 +125,11 @@ function SectionsEditor(
 function ImageEditor({
   section,
   setSection,
+  forceRerender,
 }: {
   section: Section | null;
   setSection: React.Dispatch<React.SetStateAction<Section | null>>;
+  forceRerender: () => void;
 }) {
   if (!section) {
     return (
@@ -87,8 +149,24 @@ function ImageEditor({
           </button>
         </div>
         <img src={section.image} className="aspect-[4/3] w-full rounded-lg object-cover" />
-        <Button>Browse Your Library</Button>
-        <Button variant="outline"> Upload Your Own Image</Button>
+        <LibraryImagePickerDialog section={section} forceRerender={forceRerender} />
+
+        <Button asChild variant="outline">
+          <label>
+            Upload Your Own Image
+            <input
+              type="file"
+              className="hidden"
+              accept="image/*"
+              onChange={(e) => {
+                const selectedFile = e.target.files?.[0];
+                if (!selectedFile) return;
+                section.image = URL.createObjectURL(selectedFile);
+                forceRerender();
+              }}
+            />
+          </label>
+        </Button>
       </div>
       <div className="flex flex-col gap-2">
         <span className="text-muted-foreground text-xs uppercase">Generated Candidates</span>
@@ -96,9 +174,9 @@ function ImageEditor({
           {section.candidates.map((image) => (
             <div
               key={image}
-              className="hover:ring-ring/50 cursor-pointer overflow-hidden rounded-lg transition-all hover:ring-[3px]"
+              className="hover:ring-ring/50 aspect-[4/3] cursor-pointer overflow-hidden rounded-lg transition-all hover:ring-[3px]"
             >
-              <img src={image} className="aspect-[4/3] w-full object-cover" />
+              <img src={image} className="size-full object-cover" />
             </div>
           ))}
         </div>
@@ -168,6 +246,9 @@ export default function ({ params }: { params: Promise<{ id: string }> }) {
   const [selectedSection, setSelectedSection] = useState<Section | null>(null);
   const [state, setState] = useState(0);
 
+  const [_unused, _setUnused] = useState(0);
+  const forceRerender = () => _setUnused((v) => v + 1);
+
   useEffect(() => {
     const interval = window.setInterval(() => setState((prev) => prev + 1), 3000);
     return () => window.clearInterval(interval);
@@ -191,7 +272,7 @@ export default function ({ params }: { params: Promise<{ id: string }> }) {
           )}
         >
           <div className="w-screen md:contents">
-            <ImageEditor section={selectedSection} setSection={setSelectedSection} />
+            <ImageEditor section={selectedSection} setSection={setSelectedSection} forceRerender={forceRerender} />
           </div>
         </div>
       </div>

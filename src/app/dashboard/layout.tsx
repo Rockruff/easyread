@@ -9,9 +9,9 @@ export default function DashboardLayout({
   breadcrumbs: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen overflow-hidden max-md:contents">
+    <div className="flex h-screen items-stretch overflow-hidden max-md:contents">
       <Sidebar />
-      <div className="h-screen flex-1 overflow-y-auto max-md:contents">
+      <div className="flex-1 overflow-y-auto max-md:contents">
         <header className="bg-background text-foreground sticky top-0 z-10 h-[var(--header-height)] border-b">
           <Header breadcrumbs={breadcrumbs} />
         </header>

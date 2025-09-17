@@ -23,6 +23,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "javascript-time-ago": "^2.5.11",
+    "jotai": "^2.14.0",
     "lucide-react": "^0.542.0",
     "next": "15.5.2",
     "nextjs-dynamic-breadcrumbs": "github:Rockruff/nextjs-dynamic-breadcrumbs",
