@@ -104,7 +104,7 @@ export default function () {
               {group_images.map((image, index) => (
                 <div key={index} className="group relative aspect-4/3">
                   <img src={image.url} className="size-full object-cover"></img>
-                  <div className="absolute inset-0 flex items-center justify-center gap-4 bg-black/75 text-white opacity-0 group-hover:opacity-100">
+                  <div className="absolute inset-0 flex items-center justify-center gap-4 bg-black/75 text-white transition-opacity not-group-hover:opacity-0">
                     <Button size="icon" variant="ghost" onClick={() => downloadImage(image.url)}>
                       <DownloadIcon />
                     </Button>

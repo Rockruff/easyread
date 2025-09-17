@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { ImageGenerationOptions } from "@/components/dashboard/image-generation-options";
+import { pickFile } from "@/lib/utils";
 
 export default function () {
   const router = useRouter();
@@ -20,11 +21,11 @@ export default function () {
     setFile(null);
     setFileUrl(null);
   };
-  const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (!selectedFile) return;
-    setFile(selectedFile);
-    setFileUrl(URL.createObjectURL(selectedFile));
+  const selectFile = async () => {
+    const file = await pickFile(".pdf");
+    if (!file) return;
+    setFile(file);
+    setFileUrl(URL.createObjectURL(file));
   };
 
   const [enableImages, setEnableImages] = useState(true);
@@ -51,11 +52,8 @@ export default function () {
           <>
             <CloudUploadIcon className="text-muted-foreground size-12" />
             <div className="text-muted-foreground text-xs">Supported formats: PDF, DOCX (Max 10MB)</div>
-            <Button asChild className="max-md:w-full">
-              <label>
-                Browse Files
-                <input type="file" className="hidden" accept=".pdf" onChange={selectFile} />
-              </label>
+            <Button className="max-md:w-full" onClick={selectFile}>
+              Browse Files
             </Button>
           </>
         )}

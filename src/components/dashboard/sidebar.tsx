@@ -108,9 +108,7 @@ export default function () {
               <>
                 <img src={user.avatar} className="size-9.5 rounded-full" />
                 <div className="flex flex-1 flex-col gap-1.5 overflow-hidden text-left">
-                  <span className="truncate text-[calc(4rem/5)]/none">
-                    {user.firstName} {user.lastName}
-                  </span>
+                  <span className="truncate text-[calc(4rem/5)]/none">{user.displayName}</span>
                   <span className="truncate text-[calc(2rem/3)]/none">{user.email}</span>
                 </div>
               </>

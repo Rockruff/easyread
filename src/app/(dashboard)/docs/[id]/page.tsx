@@ -35,7 +35,7 @@ import { Doc, fetchDoc } from "@/lib/api/docs";
 import { fetchImages } from "@/lib/api/images";
 import { Section, addNewSection, fetchSections } from "@/lib/api/sections";
 import { useFetchedState } from "@/lib/hooks/fetch";
-import { cn } from "@/lib/utils";
+import { cn, pickFile } from "@/lib/utils";
 
 // implementation of this page is dirty.
 // this page is only for ui demonstration purpose, may be refactored later.
@@ -99,7 +99,7 @@ function SectionsEditor(
           <div className="group relative aspect-[4/3] w-1/3 overflow-hidden rounded">
             <img src={section.image} className="size-full object-cover" />
             <button
-              className="absolute inset-0 grid place-items-center bg-black/75 text-white opacity-0 transition-opacity group-hover:opacity-100"
+              className="absolute inset-0 grid place-items-center bg-black/75 text-white transition-opacity not-group-hover:opacity-0"
               onClick={() => setSelectedSection(section)}
             >
               <span className="text-sm">Click to edit</span>
@@ -150,22 +150,17 @@ function ImageEditor({
         </div>
         <img src={section.image} className="aspect-[4/3] w-full rounded-lg object-cover" />
         <LibraryImagePickerDialog section={section} forceRerender={forceRerender} />
-
-        <Button asChild variant="outline">
-          <label>
-            Upload Your Own Image
-            <input
-              type="file"
-              className="hidden"
-              accept="image/*"
-              onChange={(e) => {
-                const selectedFile = e.target.files?.[0];
-                if (!selectedFile) return;
-                section.image = URL.createObjectURL(selectedFile);
-                forceRerender();
-              }}
-            />
-          </label>
+        <Button
+          variant="outline"
+          onClick={async () => {
+            const file = await pickFile("image/*");
+            if (!file) return;
+            // mock change section image
+            section.image = URL.createObjectURL(file);
+            forceRerender();
+          }}
+        >
+          Upload Your Own Image
         </Button>
       </div>
       <div className="flex flex-col gap-2">
