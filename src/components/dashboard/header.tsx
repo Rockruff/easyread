@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 import { BreadcrumbGroup } from "./breadcrumbs";
 import { isMobileSidebarOpenAtom } from "@/stores/sidebar";
 
-export default function Header({ breadcrumbs }: { breadcrumbs?: React.ReactNode }) {
+export default function ({ breadcrumbs }: { breadcrumbs?: React.ReactNode }) {
   const setIsMobileSidebarOpen = useSetAtom(isMobileSidebarOpenAtom);
 
   return (

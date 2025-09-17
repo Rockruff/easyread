@@ -1,13 +1,7 @@
 import Header from "../../components/dashboard/header";
 import Sidebar from "../../components/dashboard/sidebar";
 
-export default function DashboardLayout({
-  children,
-  breadcrumbs,
-}: {
-  children: React.ReactNode;
-  breadcrumbs: React.ReactNode;
-}) {
+export default function ({ children, breadcrumbs }: { children: React.ReactNode; breadcrumbs: React.ReactNode }) {
   return (
     <div className="flex h-screen items-stretch overflow-hidden max-md:contents">
       <Sidebar />

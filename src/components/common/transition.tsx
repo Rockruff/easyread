@@ -13,7 +13,7 @@ interface TransitionConfig extends React.ComponentProps<"div"> {
   after?: string; // class after animation (visible state)
 }
 
-export default function Transition({
+export default function ({
   tag: Tag = "div",
   show,
   children,
