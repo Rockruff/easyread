@@ -50,7 +50,7 @@ export function pickFile(accept: string): Promise<File | null> {
   });
 }
 
-export function pickFiles(accept: string): Promise<File[] | null> {
+export function pickFiles(accept: string): Promise<File[]> {
   return new Promise((resolve) => {
     const input = document.createElement("input");
     input.type = "file";
@@ -60,8 +60,8 @@ export function pickFiles(accept: string): Promise<File[] | null> {
 
     input.onchange = (e: Event) => {
       const target = e.target as HTMLInputElement;
-      const files = target.files ? Array.from(target.files) : null;
-      resolve(files && files.length > 0 ? files : null);
+      const files = target.files ? Array.from(target.files) : [];
+      resolve(files);
       document.body.removeChild(input);
     };
 
