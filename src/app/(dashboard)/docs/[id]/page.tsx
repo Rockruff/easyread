@@ -12,7 +12,7 @@ import {
   XIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -243,11 +243,6 @@ export default function ({ params }: { params: Promise<{ id: string }> }) {
 
   const [_unused, _setUnused] = useState(0);
   const forceRerender = () => _setUnused((v) => v + 1);
-
-  useEffect(() => {
-    const interval = window.setInterval(() => setState((prev) => prev + 1), 3000);
-    return () => window.clearInterval(interval);
-  }, []);
 
   return (
     <main className="flex h-[var(--page-height)] flex-col">

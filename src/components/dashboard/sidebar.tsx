@@ -96,7 +96,7 @@ export default function () {
                 className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-12 justify-start gap-3 text-base"
                 asChild
               >
-                <Link href="/logout" onClick={onNavLinkClick}>
+                <Link href="/" onClick={onNavLinkClick}>
                   <LogOutIcon />
                   <span>Logout</span>
                 </Link>
