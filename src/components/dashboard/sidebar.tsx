@@ -49,7 +49,7 @@ export default function () {
       >
         <aside className="bg-sidebar text-sidebar-foreground flex w-[var(--sidebar-width)] flex-col overflow-hidden">
           <div className="border-sidebar-border grid h-[var(--header-height)] place-items-center border-b">
-            <Logo />
+            <Logo className="-ml-4" />
           </div>
           <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4">
             <nav className="flex flex-col">
