@@ -15,7 +15,7 @@ import { Children } from "react";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
-import Logo from "@/components/branding/logo";
+import Logo from "@/components/app/app-logo";
 import { cn } from "@/lib/utils";
 import { isMaxMdScreenAtom } from "@/stores/responsive";
 

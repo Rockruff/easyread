@@ -1,4 +1,4 @@
-import { me } from "@/lib/api/mock/users";
+import { me } from "@/app/api/(mock)/users";
 import { toDto } from "@/lib/api/users";
 
 export async function GET() {

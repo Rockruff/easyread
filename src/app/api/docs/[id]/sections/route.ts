@@ -1,5 +1,5 @@
-import all_docs from "@/lib/api/mock/docs";
-import all_sections from "@/lib/api/mock/sections";
+import all_docs from "@/app/api/(mock)/docs";
+import all_sections from "@/app/api/(mock)/sections";
 import { Section, toDto } from "@/lib/api/sections";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {

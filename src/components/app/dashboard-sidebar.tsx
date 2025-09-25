@@ -5,9 +5,10 @@ import { FileTextIcon, ImagesIcon, LogOutIcon, SettingsIcon } from "lucide-react
 import Link from "next/link";
 import { useEffect } from "react";
 
-import Transition from "../common/transition";
-import { Button } from "../ui/button";
-import Logo from "@/components/branding/logo";
+import { Button } from "@/components/ui/button";
+
+import Logo from "@/components/app/app-logo";
+import Transition from "@/components/common/transition";
 import { fetchCurrentUser } from "@/lib/api/users";
 import { useFetchedState } from "@/lib/hooks/fetch";
 import { isMaxMdScreenAtom } from "@/stores/responsive";

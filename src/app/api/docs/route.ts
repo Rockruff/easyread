@@ -1,5 +1,5 @@
+import all_docs from "@/app/api/(mock)/docs";
 import { toDto } from "@/lib/api/docs";
-import all_docs from "@/lib/api/mock/docs";
 
 export async function GET() {
   const dtos = all_docs.map(toDto);

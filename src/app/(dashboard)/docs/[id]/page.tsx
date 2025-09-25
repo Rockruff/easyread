@@ -30,7 +30,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-import { ImageGenerationOptions } from "@/components/dashboard/image-generation-options";
+import { ImageGenerationOptions } from "@/components/app/image-generation-options";
 import { Doc, fetchDoc } from "@/lib/api/docs";
 import { fetchImages } from "@/lib/api/images";
 import { Section, addNewSection, fetchSections } from "@/lib/api/sections";

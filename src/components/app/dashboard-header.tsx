@@ -3,8 +3,9 @@
 import { useSetAtom } from "jotai";
 import { BellIcon, MenuIcon } from "lucide-react";
 
-import { Button } from "../ui/button";
-import { BreadcrumbGroup } from "./breadcrumbs";
+import { Button } from "@/components/ui/button";
+
+import { BreadcrumbGroup } from "@/components/common/breadcrumbs";
 import { isMobileSidebarOpenAtom } from "@/stores/sidebar";
 
 export default function ({ breadcrumbs }: { breadcrumbs?: React.ReactNode }) {

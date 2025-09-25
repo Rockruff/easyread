@@ -1,4 +1,4 @@
-import { Image } from "../images";
+import { Image } from "@/lib/api/images";
 
 const images: Image[] = [
   {

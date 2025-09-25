@@ -2,7 +2,7 @@
 
 import { use } from "react";
 
-import { Breadcrumb } from "@/components/dashboard/breadcrumbs";
+import { Breadcrumb } from "@/components/common/breadcrumbs";
 import { fetchDoc } from "@/lib/api/docs";
 import { useFetchedState } from "@/lib/hooks/fetch";
 

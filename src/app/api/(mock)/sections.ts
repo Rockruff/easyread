@@ -1,5 +1,5 @@
-import { Section } from "../sections";
-import docs from "./docs";
+import docs from "@/app/api/(mock)/docs";
+import { Section } from "@/lib/api/sections";
 
 const sections: Section[] = [
   {

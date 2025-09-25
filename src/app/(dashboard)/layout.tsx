@@ -1,5 +1,5 @@
-import Header from "../../components/dashboard/header";
-import Sidebar from "../../components/dashboard/sidebar";
+import Header from "@/components/app/dashboard-header";
+import Sidebar from "@/components/app/dashboard-sidebar";
 
 export default function ({ children, breadcrumbs }: { children: React.ReactNode; breadcrumbs: React.ReactNode }) {
   return (

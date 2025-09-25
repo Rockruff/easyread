@@ -1,5 +1,9 @@
-import branding from "./config";
 import { cn } from "@/lib/utils";
+
+const branding = {
+  logo: "https://www.health.gov.au/sites/default/files/styles/h_content_max_width_no_upscale/public/2023-11/easy-read-resources-for-people-with-intellectual-disability.png.webp",
+  name: "ReadEasy",
+};
 
 export default function ({ className }: { className?: string }) {
   return (

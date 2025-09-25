@@ -1,4 +1,4 @@
-import { User } from "../users";
+import { User } from "@/lib/api/users";
 
 export const me: User = {
   displayName: "Jane Doe",

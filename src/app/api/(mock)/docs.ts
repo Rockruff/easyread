@@ -1,4 +1,4 @@
-import { Doc } from "../docs";
+import { Doc } from "@/lib/api/docs";
 
 const docs: Doc[] = [
   {

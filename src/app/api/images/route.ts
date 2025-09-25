@@ -1,5 +1,5 @@
+import all_images from "@/app/api/(mock)/images";
 import { toDto } from "@/lib/api/images";
-import all_images from "@/lib/api/mock/images";
 
 export async function GET() {
   const dtos = all_images.sort((x, y) => y.created.getTime() - x.created.getTime()).map(toDto);

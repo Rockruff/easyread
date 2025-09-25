@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import { ImageGenerationOptions } from "@/components/dashboard/image-generation-options";
+import { ImageGenerationOptions } from "@/components/app/image-generation-options";
 import { useStableMemo } from "@/lib/hooks/stable-memo";
 import { cn, pickFiles } from "@/lib/utils";
 
